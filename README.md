@@ -81,6 +81,29 @@ ISO8583:
             
             Console.WriteLine(data[(int)MessageParser.NET.Tools.ISO8583.FildUsage.CardAcceptorTerminalIdentification]);
             
+            OR:
+            
+            string MTI = "0200";
+            string PAN = "62737105152193654";
+            string ProCode = "001000";
+            string Amount = "20000";
+            string DateTime = "0239501820";
+            string STAN = "456";
+            string TID = "44449999";
+            string POSEM = "02";
+
+            string[] DE = new string[130];
+
+            DE[2] = PAN;
+            DE[3] = ProCode;
+            DE[4] = Amount;
+            DE[7] = DateTime;
+            DE[11] = STAN;
+            DE[22] = POSEM;
+            DE[41] = TID;
+
+            string NewISOmsg = iso.Build(DE, MTI);
+            
             
 Refrence:
 
