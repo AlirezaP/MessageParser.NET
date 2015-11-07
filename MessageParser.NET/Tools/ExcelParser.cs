@@ -57,15 +57,15 @@ namespace MessageParser.NET.Tools
             // excel.Save();
         }
 
-        public void AddRangeColumn(ExcelWorksheet workSheet, string[] columnsName)
+        public void AddRangeColumn(ExcelWorksheet workSheet, string[] columnsNames)
         {
             int columnLengh = 0;
             if (workSheet.Dimension != null)
                 columnLengh = workSheet.Dimension.End.Column;
-            for (int i = 0; i < columnsName.Length; i++)
+            foreach (string columnName in columnsNames)
             {
                 columnLengh++;
-                workSheet.Cells[1, columnLengh].Value = columnsName[i];
+                workSheet.Cells[1, columnLengh].Value = columnName;
             }
 
             // excel.Save();
