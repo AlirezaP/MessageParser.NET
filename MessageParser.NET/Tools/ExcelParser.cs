@@ -19,7 +19,6 @@ namespace MessageParser.NET.Tools
         }
         public ExcelWorksheets GetWorksheets()
         {
-            var a = excel.Workbook.Worksheets[1];
             return excel.Workbook.Worksheets;
         }
 
@@ -87,12 +86,11 @@ namespace MessageParser.NET.Tools
         {
             int column = 1;
             int rowLengh = 1;
-            int columnLengh = 1;
 
             if (worksheet.Dimension != null)
             {
                 rowLengh = worksheet.Dimension.End.Row;
-                columnLengh = worksheet.Dimension.End.Column;
+                var columnLengh = worksheet.Dimension.End.Column;
 
                 for (int i = 1; i <= columnLengh; i++)
                 {
