@@ -19,7 +19,6 @@ namespace MessageParser.NET.Tools
         }
         public ExcelWorksheets GetWorksheets()
         {
-            var a = excel.Workbook.Worksheets[1];
             return excel.Workbook.Worksheets;
         }
 
@@ -57,15 +56,15 @@ namespace MessageParser.NET.Tools
             // excel.Save();
         }
 
-        public void AddRangeColumn(ExcelWorksheet workSheet, string[] columnsName)
+        public void AddRangeColumn(ExcelWorksheet workSheet, string[] columnsNames)
         {
             int columnLengh = 0;
             if (workSheet.Dimension != null)
                 columnLengh = workSheet.Dimension.End.Column;
-            for (int i = 0; i < columnsName.Length; i++)
+            foreach (string columnName in columnsNames)
             {
                 columnLengh++;
-                workSheet.Cells[1, columnLengh].Value = columnsName[i];
+                workSheet.Cells[1, columnLengh].Value = columnName;
             }
 
             // excel.Save();
@@ -87,12 +86,11 @@ namespace MessageParser.NET.Tools
         {
             int column = 1;
             int rowLengh = 1;
-            int columnLengh = 1;
 
             if (worksheet.Dimension != null)
             {
                 rowLengh = worksheet.Dimension.End.Row;
-                columnLengh = worksheet.Dimension.End.Column;
+                var columnLengh = worksheet.Dimension.End.Column;
 
                 for (int i = 1; i <= columnLengh; i++)
                 {
