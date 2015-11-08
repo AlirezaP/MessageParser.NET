@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageParser.NET", "MessageParser.NET\MessageParser.NET.csproj", "{795CDECF-219E-4F33-9792-8F2817BFFB42}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refrences", "Refrences\Refrences.csproj", "{50EC0A89-8713-491E-AA20-4D708A5F2B33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageParser.Net", "MessageParser.Net\MessageParser.Net.csproj", "{64DB72DB-F061-4DDC-94B6-69BC1A845BC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{795CDECF-219E-4F33-9792-8F2817BFFB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{795CDECF-219E-4F33-9792-8F2817BFFB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{795CDECF-219E-4F33-9792-8F2817BFFB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{795CDECF-219E-4F33-9792-8F2817BFFB42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50EC0A89-8713-491E-AA20-4D708A5F2B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50EC0A89-8713-491E-AA20-4D708A5F2B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50EC0A89-8713-491E-AA20-4D708A5F2B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50EC0A89-8713-491E-AA20-4D708A5F2B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64DB72DB-F061-4DDC-94B6-69BC1A845BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64DB72DB-F061-4DDC-94B6-69BC1A845BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64DB72DB-F061-4DDC-94B6-69BC1A845BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64DB72DB-F061-4DDC-94B6-69BC1A845BC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

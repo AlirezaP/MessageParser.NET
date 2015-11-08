@@ -8,10 +8,54 @@ namespace MessageParser.NET.Tools
     public class ISO8583
     {
 
-        int[] DEVarLen = new int[130];  
+        int[] DEVarLen = new int[130];
         int[] DEFixLen = new int[130];
 
-       public enum FildUsage
+        public enum MTI
+        {
+            AuthorizationRequest = 0100
+            ,
+            RequestResponse = 0110
+                ,
+            AuthorizationAdvice = 0120
+                ,
+            AuthorisationAdviceRepeat = 0121
+                ,
+            IssuerResponsetoAuthorizationAdvice = 0130
+                ,
+            AcquirerFinancialRequest = 0200
+                ,
+            IssuerResponseToFinancialRequest = 0210
+                ,
+            AcquirerFinancialAdvice = 0220
+                ,
+            AcquirerFinancialAdviceRepeat = 0221
+               ,
+            IssuerResponsetoFinancialAdvice = 0230
+                ,
+            BatchUpload = 0320
+               ,
+            BatchUploadResponse = 0330
+                ,
+            AcquirerReversalRequest = 0400
+                ,
+            AcquirerReversalAdvice = 0420
+                ,
+            AcquirerReversalAdviceRepeatMessage = 0421
+                ,
+            IssuerReversalResponse = 0430
+                ,
+            BatchSettlementRequest = 0500
+                ,
+            BatchSettlementResponse = 0510
+                ,
+            NetworkManagementRequest = 0800
+                ,
+            NetworkManagementResponse = 0810
+                , NetworkManagementAdvice = 0820
+        }
+
+        public enum FieldUsage
         {
             Bitmap = 1
             ,
@@ -310,11 +354,11 @@ namespace MessageParser.NET.Tools
         {
             string newISO = MTI;
 
-            
+
             string newDE1 = "";
             for (int I = 2; I <= 64; I++) { if (DE[I] != null) { newDE1 += "1"; } else { newDE1 += "0"; } }
 
-            
+
             string newDE2 = "";
             for (int I = 65; I <= 128; I++) { if (DE[I] != null) { newDE2 += "1"; } else { newDE2 += "0"; } }
 
@@ -334,7 +378,7 @@ namespace MessageParser.NET.Tools
 
             if (DE2Hex == "0000000000000000") DE[1] = null;
 
-          
+
 
             for (int I = 0; I <= 128; I++)
             {
@@ -355,7 +399,7 @@ namespace MessageParser.NET.Tools
                             string BMPadded = DE[I].PadLeft(DEFixLen[I], '0');
                             string sBM = BMPadded.Substring(BMPadded.Length - Math.Abs(DEFixLen[I]), Math.Abs(DEFixLen[I]));
                             newISO += sBM;
-                        }   
+                        }
                     }
                     else
                     {
@@ -373,7 +417,7 @@ namespace MessageParser.NET.Tools
         public string[] Parse(string ISOmsg)
         {
             string[] DE = new string[130];
-            
+
             string de1Binary = "";
             string de2Binary = "";
             int FieldNo;
@@ -390,7 +434,7 @@ namespace MessageParser.NET.Tools
 
             //========BM 129 is the MTI============
             FieldNo = 129;
-            
+
 
             DE[FieldNo] = MTI;
             //========================================
@@ -403,7 +447,7 @@ namespace MessageParser.NET.Tools
 
 
             de1Binary = DEtoBinary(DE[0]);
-            
+
 
             //BitMap #1
 
@@ -418,7 +462,7 @@ namespace MessageParser.NET.Tools
 
             //------------BM2--------------
             FieldNo = 2;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght;
@@ -429,231 +473,252 @@ namespace MessageParser.NET.Tools
 
             //------------BM3--------------
             FieldNo = 3;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { 
+            {
                 myPos += myLenght;
                 myLenght = 6;
-                DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); 
+                DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
 
             //------------BM4--------------
             FieldNo = 4;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; 
+                myPos += myLenght;
                 myLenght = 12;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM5--------------
             FieldNo = 5;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
                 myPos += myLenght;
-                myLenght = 12; 
+                myLenght = 12;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
 
             //------------BM6--------------
             FieldNo = 6;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { myPos += myLenght;
+            {
+                myPos += myLenght;
                 myLenght = 12;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM7--------------
             FieldNo = 7;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { myPos += myLenght;
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght;
                 myLenght = 10;
-                DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); 
+                DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM8--------------
             FieldNo = 8;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { myPos += myLenght; 
+            {
+                myPos += myLenght;
                 myLenght = 8;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM9--------------
             FieldNo = 9;
-           
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { 
+            {
                 myPos += myLenght;
-                myLenght = 8; 
+                myLenght = 8;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM 10--------------
             FieldNo = 10;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; 
+                myPos += myLenght;
                 myLenght = 8;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM 11--------------
             FieldNo = 11;
-           
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { 
+            {
                 myPos += myLenght;
-                myLenght = 6; 
+                myLenght = 6;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM 12--------------
             FieldNo = 12;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght;
                 myLenght = 6;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM 13--------------
             FieldNo = 13;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { myPos += myLenght;
+            {
+                myPos += myLenght;
                 myLenght = 4;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM 14--------------
             FieldNo = 14;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght;
-                myLenght = 4; 
+                myLenght = 4;
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
 
             //------------BM 15--------------
             FieldNo = 15;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
 
             //------------BM 16--------------
             FieldNo = 16;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
 
             //------------BM 17--------------
             FieldNo = 17;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
 
             //------------BM 18--------------
             FieldNo = 18;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
-            //------------BM 19--------------
-            FieldNo = 19;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
+            //------------BM 19--------------
+            FieldNo = 19;
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
 
             //------------BM 20--------------
             FieldNo = 20;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //------------BM 21--------------
             FieldNo = 21;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { 
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+            {
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //------------BM 22--------------
             FieldNo = 22;
-           
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 23;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 24;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 25;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
-            { 
-                myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+            {
+                myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 26;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 27;
-           
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 1; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 1; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 28;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            {
-                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
-            //--------------------------
-            FieldNo = 29;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
-            //--------------------------
-            FieldNo = 30;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
-                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
+            //--------------------------
+            FieldNo = 29;
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
+            //--------------------------
+            FieldNo = 30;
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 31;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
-            { 
-                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 32;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght;
@@ -664,7 +729,7 @@ namespace MessageParser.NET.Tools
 
             //--------------------------
             FieldNo = 33;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght;
@@ -674,7 +739,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 34;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght;
@@ -684,7 +749,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 35;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -694,7 +759,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 36;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -704,24 +769,24 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 37;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 12; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 38;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 6; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 39;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 40;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 41;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") 
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght;
                 myLenght = 8;
@@ -729,16 +794,16 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 42;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 15; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 43;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 40; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
 
             //--------------------------
             FieldNo = 44;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -748,7 +813,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 45;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -758,7 +823,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 46;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -768,7 +833,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 47;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -778,7 +843,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 48;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -790,28 +855,30 @@ namespace MessageParser.NET.Tools
 
             //--------------------------
             FieldNo = 49;
-            
-            if (de1Binary.Substring(FieldNo - 1, 1) == "1") { 
-                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
+
+            if (de1Binary.Substring(FieldNo - 1, 1) == "1")
+            {
+                myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
+            }
             //--------------------------
             FieldNo = 50;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 51;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 52;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 16; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 53;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 18; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 54;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -820,7 +887,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 55;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -829,7 +896,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 56;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -838,7 +905,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 57;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -847,7 +914,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 58;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -856,7 +923,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 59;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -865,7 +932,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 60;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 1;
@@ -874,7 +941,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 61;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -883,7 +950,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 62;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -892,7 +959,7 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 63;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -902,7 +969,7 @@ namespace MessageParser.NET.Tools
 
             //--------------------------
             FieldNo = 64;
-            
+
             if (de1Binary.Substring(FieldNo - 1, 1) == "1") { myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
 
             /*
@@ -922,29 +989,29 @@ namespace MessageParser.NET.Tools
             //--------------------------
             int comp = 64;
             FieldNo = 65;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 16; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 66;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 1; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 67;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 68;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 69;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 70;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 3; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 71;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //-------------------------------------------------
             FieldNo = 72;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -953,98 +1020,98 @@ namespace MessageParser.NET.Tools
             }
             //--------------------------
             FieldNo = 73;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 6; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //--------------------------
             FieldNo = 74;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 75;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 76;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 77;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 78;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 79;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 80;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 81;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 10; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //-----------------------------
             FieldNo = 82;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 12; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 83;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 12; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 84;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 12; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 85;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 12; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 86;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 15; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 87;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 15; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 88;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 15; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 89;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 15; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             FieldNo = 90;
-            
+
 
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 42; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 91;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 1; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 92;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 2; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 93;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 5; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 94;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 7; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 95;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 42; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 96;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 8; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 97;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 16; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //------------------------------
             FieldNo = 98;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 25; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //-------------------------------------------------
             FieldNo = 99;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -1052,7 +1119,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 100;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -1061,12 +1128,12 @@ namespace MessageParser.NET.Tools
             }
             //------------------------------
             FieldNo = 101;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 17; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
 
             //-------------------------------------------------
             FieldNo = 102;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -1074,7 +1141,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 103;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -1083,7 +1150,7 @@ namespace MessageParser.NET.Tools
             }
             //----------------------------------
             FieldNo = 104;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1091,7 +1158,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 105;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1099,7 +1166,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 106;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1107,7 +1174,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 107;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1115,7 +1182,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 108;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1123,7 +1190,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 109;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1131,7 +1198,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 110;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1139,7 +1206,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 111;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1147,7 +1214,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 112;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1156,7 +1223,7 @@ namespace MessageParser.NET.Tools
             }
             //----------------------------
             FieldNo = 113;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -1165,7 +1232,7 @@ namespace MessageParser.NET.Tools
             }
             //-------------------------
             FieldNo = 114;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1173,7 +1240,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 115;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1181,7 +1248,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 116;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1189,7 +1256,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 117;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1197,7 +1264,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 118;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1205,7 +1272,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 119;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1213,7 +1280,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 120;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1221,7 +1288,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 121;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1229,7 +1296,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 122;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1237,7 +1304,7 @@ namespace MessageParser.NET.Tools
                 DE[FieldNo] = ISOmsg.Substring(myPos, myLenght);
             }
             FieldNo = 123;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1246,7 +1313,7 @@ namespace MessageParser.NET.Tools
             }
 
             FieldNo = 124;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1255,7 +1322,7 @@ namespace MessageParser.NET.Tools
             }
             //---------------------------------
             FieldNo = 125;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 2;
@@ -1264,7 +1331,7 @@ namespace MessageParser.NET.Tools
             }
             //----------------------------------
             FieldNo = 126;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 1;
@@ -1273,7 +1340,7 @@ namespace MessageParser.NET.Tools
             }
             //-----------------------------------
             FieldNo = 127;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1")
             {
                 myPos += myLenght; len = 3;
@@ -1282,7 +1349,7 @@ namespace MessageParser.NET.Tools
             }
             //------------------------------
             FieldNo = 128;
-            
+
             if (de2Binary.Substring(FieldNo - comp - 1, 1) == "1") { myPos += myLenght; myLenght = 4; DE[FieldNo] = ISOmsg.Substring(myPos, myLenght); }
             //-------------------------------------------------
 
@@ -1302,7 +1369,7 @@ namespace MessageParser.NET.Tools
             string deBinary = "";
             for (int I = 0; I <= 15; I++)
             {
-             //   deBinary = deBinary + Hex2Binary(HexDE.Substring(I, 1));
+                //   deBinary = deBinary + Hex2Binary(HexDE.Substring(I, 1));
                 deBinary = deBinary + Hex2BinaryAP(HexDE.Substring(I, 1));
             }
 

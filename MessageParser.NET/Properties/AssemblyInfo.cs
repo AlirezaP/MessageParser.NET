@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MessageParser.NET")]
+[assembly: AssemblyTitle("MessageParser.Net")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MessageParser.NET")]
+[assembly: AssemblyProduct("MessageParser.Net")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("795cdecf-219e-4f33-9792-8f2817bffb42")]
+[assembly: Guid("3a17d077-8b75-428f-a69d-496a0f801008")]
 
 // Version information for an assembly consists of the following four values:
 //
