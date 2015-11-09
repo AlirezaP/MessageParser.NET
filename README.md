@@ -49,6 +49,42 @@ XML:
             var temp2 = xml.GetAllText(raw);
             var temp3 = xml.GetAttributeValue(raw, "book", "genre");
             
+            OR:
+            
+               String xmlString = @"<?xml version='1.0' encoding='utf - 8'?>
+               <Card xmlns:Card = '1234' >
+                <item y='12' x='23'>
+                 <a></a>
+                 <b></b>
+                 <a></a>
+                </item>
+                <item2 x = 'abc' ></item2>
+                 <item y='1' x='2'>
+                  <a></a>
+                 </item>
+                <a y='1'></a>
+               </Card> ";
+               
+               var s = xml.SetAttribute(xmlString, "item", "a","val" ,"yes");
+               
+               //OutPut:
+            /*
+            <? xml version = '1.0' encoding = 'utf - 8' ?>
+           < Card xmlns:Card = "1234" >
+              < item y = "12" x = "23" >
+               < a val = "yes" ></ a >
+               < b ></ b >
+               < a val = "yes" ></ a >
+              </ item >
+              < item2 x = "abc" ></ item2 >
+              < item y = "1" x = "2" >
+               < a val = "yes" ></ a >
+              </ item >
+              < a y = "1" ></ a >
+           </ Card >
+
+            */
+            
 
 JSON:
 
@@ -79,7 +115,7 @@ ISO8583:
             MessageParser.NET.Tools.ISO8583 iso = new MessageParser.NET.Tools.ISO8583();
             string[] data = iso.Parse("080020200000008000000000000000013239313130303031");
             
-            Console.WriteLine(data[(int)MessageParser.NET.Tools.ISO8583.FildUsage.CardAcceptorTerminalIdentification]);
+            Console.WriteLine(data[(int)MessageParser.NET.Tools.ISO8583.FieldUsage.CardAcceptorTerminalIdentification]);
             
             OR:
             
