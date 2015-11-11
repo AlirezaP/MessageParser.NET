@@ -6,6 +6,13 @@ namespace MessageParser.NET.Tools
 {
     public class XmlParser
     {
+        /// <summary>
+        /// Get Specified Attribute Value
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <param name="element">Element Name</param>
+        /// <param name="attribute">Attribute Name</param>
+        /// <returns></returns>
         public string GetAttributeValue(string xmlString, string element, string attribute)
         {
             using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
@@ -16,6 +23,12 @@ namespace MessageParser.NET.Tools
             }
         }
 
+        /// <summary>
+        /// Get Specified Element Content
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <param name="element">Element Name</param>
+        /// <returns></returns>
         public string GetElementContent(string xmlString, string element)
         {
             using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
@@ -25,6 +38,11 @@ namespace MessageParser.NET.Tools
             }
         }
 
+        /// <summary>
+        /// Get All Elements In Xml Text
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <returns></returns>
         public string[] GetAllElements(string xmlString)
         {
             using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
@@ -40,6 +58,12 @@ namespace MessageParser.NET.Tools
                 return output.ToArray();
             }
         }
+
+        /// <summary>
+        /// Get All Text In Xml Text
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <returns></returns>
         public string[] GetAllText(string xmlString)
         {
             using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
@@ -67,6 +91,15 @@ namespace MessageParser.NET.Tools
         //    }
         //}
 
+        /// <summary>
+        /// Set Attribute Value In A Node With The Specified Parent
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <param name="parent">Parent Name</param>
+        /// <param name="element">Element Name</param>
+        /// <param name="attributeName">Attribute Name</param>
+        /// <param name="value">Attribute Value</param>
+        /// <returns></returns>
         public string SetAttribute(string xmlString, string parent, string element, string attributeName, string value)
         {
             using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
@@ -97,6 +130,16 @@ namespace MessageParser.NET.Tools
             }
         }
 
+        /// <summary>
+        /// Set Attribute Value In A Node
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <param name="element">Element Name</param>
+        /// <param name="attributeName">Attribute Name</param>
+        /// <param name="value">Attribute Value</param>
+        /// <param name="allElements">Wethere Set ALL Attribute Value With Specified Name Or Only First Attribute
+        /// :True Set All Attribute Value With Specified Name In Xml Text. :False Set Only First Attribute With Specified Name In Xml Text</param>
+        /// <returns></returns>
         public string SetAttribute(string xmlString, string element, string attributeName, string value, bool allElements)
         {
             StringBuilder output = new StringBuilder();
@@ -154,6 +197,17 @@ namespace MessageParser.NET.Tools
             return output.ToString();
         }
 
+        /// <summary>
+        /// Set Attribute Value In A Node
+        /// </summary>
+        /// <param name="xmlString">Xml Text</param>
+        /// <param name="element">Element Name</param>
+        /// <param name="attributeName">Attribute Name</param>
+        /// <param name="value">Attribute Value</param>
+        /// <param name="allElements">Wethere Set ALL Attribute Value With Specified Name Or Only First Attribute
+        /// True Set All Attribute Value With Specified Name In Xml Text.
+        /// False Set Only First Attribute With Specified Name In Xml Text</param>
+        /// <returns></returns>
         public string SetAttribute(XmlReader reader, string element, string attributeName, string value, bool allElements)
         {
             StringBuilder output = new StringBuilder();
@@ -210,6 +264,12 @@ namespace MessageParser.NET.Tools
             return output.ToString();
         }
 
+        /// <summary>
+        /// Check Wethere Exsist This Attribute Name In Xml Text.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="attributeName"></param>
+        /// <returns></returns>
         public bool ISExsistAttribute(XmlReader reader, string attributeName)
         {
             if (reader.HasAttributes)
@@ -224,7 +284,13 @@ namespace MessageParser.NET.Tools
             return false;
         }
 
-
+        /// <summary>
+        /// Update Specified Attribute Value
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="writer"></param>
+        /// <param name="attributeName"></param>
+        /// <param name="value"></param>
         public void UpdateAttribute(XmlReader reader, XmlWriter writer, string attributeName, string value)
         {
             bool flag = false;
@@ -247,6 +313,11 @@ namespace MessageParser.NET.Tools
                 writer.WriteAttributeString(null, attributeName, null, value);
         }
 
+        /// <summary>
+        /// Get SubTree
+        /// </summary>
+        /// <param name="xmlString"></param>
+        /// <returns></returns>
         public string xmlSubTree(string xmlString)
         {
             StringBuilder output = new StringBuilder();

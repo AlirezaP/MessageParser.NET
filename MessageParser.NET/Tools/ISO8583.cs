@@ -350,6 +350,13 @@ namespace MessageParser.NET.Tools
             DEFixLen[98] = -25; DEFixLen[101] = -17; DEFixLen[128] = -16;
 
         }
+
+        /// <summary>
+        /// Build Iso8583 Message
+        /// </summary>
+        /// <param name="DE">Elements Array</param>
+        /// <param name="MTI">MTI Code</param>
+        /// <returns>Iso8583 Message</returns>
         public string Build(string[] DE, string MTI)
         {
             string newISO = MTI;
@@ -414,6 +421,12 @@ namespace MessageParser.NET.Tools
 
 
         }
+
+        /// <summary>
+        /// Parse Iso8583
+        /// </summary>
+        /// <param name="ISOmsg">Iso8583 Message</param>
+        /// <returns>Elements Array</returns>
         public string[] Parse(string ISOmsg)
         {
             string[] DE = new string[130];

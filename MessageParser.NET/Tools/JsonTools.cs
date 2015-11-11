@@ -9,6 +9,12 @@ namespace MessageParser.NET.Tools
 {
    public class JsonTools
     {
+        /// <summary>
+        /// Deserialize Json To Specified Object
+        /// </summary>
+        /// <typeparam name="T">Object Type</typeparam>
+        /// <param name="json">Json Message</param>
+        /// <returns>Json Message</returns>
         public static T Deserialize<T>(string json)
         {
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(json)))
@@ -18,6 +24,12 @@ namespace MessageParser.NET.Tools
             }
         }
 
+        /// <summary>
+        /// Serialize Specified Object To Json
+        /// </summary>
+        /// <typeparam name="T">Object Tyoe</typeparam>
+        /// <param name="obj">Object</param>
+        /// <returns>Json Message</returns>
         public static string Serialize<T>(T obj)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
