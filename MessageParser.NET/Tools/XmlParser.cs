@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace MessageParser.NET.Tools
@@ -79,6 +80,24 @@ namespace MessageParser.NET.Tools
                 return output.ToArray();
             }
         }
+
+        public string[] GetElementText(string xmlString, string elementName)
+        {
+            string pattern = "<" + elementName + ".*>.*</" + elementName + ">";
+
+            Regex reg = new Regex(pattern);
+            var temp = reg.Matches(xmlString);
+            Queue<string> res = new Queue<string>();
+
+            for (int i = 0; i < temp.Count; i++)
+            {
+                res.Enqueue(temp[i].Value.Substring(temp[i].Value.IndexOf('>') + 1, temp[i].Value.IndexOf('<', temp[i].Value.IndexOf('>')) - temp[i].Value.IndexOf('>') - 1));
+            }
+
+            return res.ToArray();
+        }
+
+
 
         //public void SetAttribute(string xmlString, string parent, string element, string attributeName, string value)
         //{
