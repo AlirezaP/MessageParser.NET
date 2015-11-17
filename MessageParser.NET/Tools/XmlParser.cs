@@ -83,7 +83,7 @@ namespace MessageParser.NET.Tools
 
         public string[] GetElementText(string xmlString, string elementName)
         {
-            string pattern = "<\\s*" + elementName + ".*>.*\\s*<\\s*/" + elementName + "\\s*>";
+            string pattern = "<\\s*" + elementName + ".*>.*\\s*<\\s*/\\s*" + elementName + "\\s*>";
 
             Regex reg = new Regex(pattern);
             var temp = reg.Matches(xmlString);
