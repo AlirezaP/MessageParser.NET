@@ -85,6 +85,25 @@ XML:
 
             */
             
+//OR
+ 
+             var temp4 = xml.SetElementText(xmlString,"a","new 123 val");
+             
+             /*Out Put:
+             <?xml version='1.0' encoding='utf - 8'?>
+           <Card xmlns:Card = '1234' >
+            <item y='12' x='23'>
+             <a    >new 123 val</a>
+             <b></b>
+             <a>new 123 val</a>
+            </item>
+            <item2 x = 'abc' ></item2>
+             <item y='1' x='2'>
+              <a>new 123 val</a>
+             </item>
+            <a y='1'>new 123 val</a>
+           </Card>*/
+
 
 JSON:
 
