@@ -82,11 +82,9 @@ XML:
               </ item >
               < a y = "1" ></ a >
            </ Card >
-
             */
             
-//OR
- 
+            //OR:
              var temp4 = xml.SetElementText(xmlString,"a","new 123 val");
              
              /*Out Put:
