@@ -83,7 +83,7 @@ namespace MessageParser.NET.Tools
 
         public string[] GetElementText(string xmlString, string elementName)
         {
-            string pattern = "<\\s*" + elementName + ".*>.*\\s*<\\s*/\\s*" + elementName + "\\s*>";
+            string pattern = "<\\s*" + elementName + ".*>\\s*.*\\s*<\\s*/\\s*" + elementName + "\\s*>";
 
             Regex reg = new Regex(pattern);
             var temp = reg.Matches(xmlString);
@@ -98,6 +98,29 @@ namespace MessageParser.NET.Tools
         }
 
 
+        public string SetElementText(string xmlString, string elementName, string value)
+        {
+            string pattern = "<\\s*" + elementName + ".*>\\s*.*\\s*<\\s*/\\s*" + elementName + "\\s*>";
+
+            Regex reg = new Regex(pattern);
+            var temp = reg.Matches(xmlString);
+            Queue<string> res = new Queue<string>();
+
+            for (int i = 0; i < temp.Count; i++)
+            {
+                string text = (temp[i].Value.Substring(temp[i].Value.IndexOf('>') + 1, temp[i].Value.IndexOf('<', temp[i].Value.IndexOf('>')) - temp[i].Value.IndexOf('>') - 1));
+
+                if (string.IsNullOrEmpty(text))
+                {
+                    xmlString = xmlString.Replace(temp[i].Value, temp[i].Value.Trim().Replace("><", ">" + value + "<"));
+                    continue;
+                }
+
+                xmlString = xmlString.Replace(temp[i].Value, temp[i].Value.Replace(text, value));
+            }
+
+            return xmlString;
+        }
 
         //public void SetAttribute(string xmlString, string parent, string element, string attributeName, string value)
         //{
