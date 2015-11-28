@@ -30,13 +30,21 @@ namespace MessageParser.NET.Tools
         /// <param name="xmlString">Xml Text</param>
         /// <param name="element">Element Name</param>
         /// <returns></returns>
-        public string GetElementContent(string xmlString, string element)
+        public string[] GetElementContent(string xmlString, string element)
         {
-            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
-            {
-                reader.ReadToFollowing(element);
-                return reader.ReadElementContentAsString();
-            }
+            //using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
+            //{
+            //    reader.ReadToFollowing(element);
+            //    return reader.ReadElementContentAsString();
+            //}
+            Regex regex = new Regex(@"<\s*" + element + @".*>.*<\s*/\s*" + element + @"\s*>", RegexOptions.Singleline);
+            var match = regex.Matches(xmlString);
+            string[] res = new string[match.Count];
+
+            for (int i = 0; i < res.Length; i++)
+                res[i] = match[i].Value;
+
+            return res;
         }
 
         /// <summary>
@@ -363,7 +371,7 @@ namespace MessageParser.NET.Tools
         public string xmlSubTree(string xmlString)
         {
             StringBuilder output = new StringBuilder();
-            // Create an XmlReader
+            //Create an XmlReader
             using (XmlReader temp = XmlReader.Create(new System.IO.StringReader(xmlString)))
             {
                 XmlWriterSettings ws = new XmlWriterSettings();
@@ -372,7 +380,7 @@ namespace MessageParser.NET.Tools
                 using (XmlWriter writer = XmlWriter.Create(output, ws))
                 {
 
-                    // Parse the file and display each of the nodes.
+                    //Parse the file and display each of the nodes.
                     while (temp.Read())
                     {
                         switch (temp.NodeType)
