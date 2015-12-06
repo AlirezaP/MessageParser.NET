@@ -48,6 +48,7 @@
     <Compile Include="Tools\ExcelParser.cs" />
     <Compile Include="Tools\ISO8583.cs" />
     <Compile Include="Tools\JsonTools.cs" />
+    <Compile Include="Tools\Patterns.cs" />
     <Compile Include="Tools\XmlParser.cs" />
   </ItemGroup>
   <ItemGroup>
