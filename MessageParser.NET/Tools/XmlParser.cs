@@ -24,6 +24,21 @@ namespace MessageParser.NET.Tools
             }
         }
 
+        public string[] GetAttributesName(string xmlString, string element)
+        {
+            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
+            {
+                Queue<string> res = new Queue<string>();
+
+                reader.ReadToFollowing(element);
+                while (reader.MoveToNextAttribute())
+                {
+                    res.Enqueue(reader.Name);
+                }
+                return res.ToArray();
+            }
+        }
+
         /// <summary>
         /// Get Specified Element Content
         /// </summary>
