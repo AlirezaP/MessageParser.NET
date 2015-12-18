@@ -206,6 +206,147 @@ Patterns:
             {
                 Console.WriteLine(t);
             }
+
+           
+ Batch Parser:<br/>
+ assume we have a txt file with this name "data.txt".<br/>
+"data.txt":<br/>
+
+                [alireza,p,0010000000,24,http://github.com/alirezap][ali,pa,0010000230,25,http://nuget.org/alirezap]
+
+first you must create a xml file (syntax) for example:<br/>
+"syntax.xml":<br/>
+
+                <?xml version="1.0" encoding="UTF-8"?>
+                <body>
+                <syntax>
+                <record StartWith="[" EndWith="]"/>
+                </syntax>
+                <content>
+                <FIELD1 ID="1" Type="string" Title="name" TERMINATOR=","/>
+                <FIELD2 ID="2" Type="string" Title="lastname" TERMINATOR=","/>
+                <FIELD3 ID="3" Type="string" Title="shenasname" TERMINATOR=","/>
+                <FIELD4 ID="4" Type="int" Title="age" TERMINATOR=","/>
+                <FIELD5 ID="5" Type="string" Title="url" TERMINATOR="]"/>
+                </content>
+                </body>
+                
+if records has a boundary you must set that in "StartWith" and "EndWith" attribute in the record element. <br/>
+in this sample our record is between "[" and "]". ([record]) --> ([alireza,p,0010000000,24,http://github.com/alirezap]).<br/>
+so record should be : <br/>
+<record StartWith="[" EndWith="]"/>. <br/>
+
+for next step you must set fields info in syntax file. for example each record in the "data.txt" has 5 section (name,lastname,id,age,url)<br/>
+so content element should be has 5 field (FIELD1,FIELD2,FIELD3,FIELD4,FIELD5).<br/>
+each field has 5 property (ID,Type,Title,TERMINATOR,MAX_LENGTH)<br/>
+
+ID:<br/>
+is a unic for field and it must order by data sections.<br/>
+
+Type:<br/>
+is type of field (for example if the first section type in the data.txt is string so Type in the Filed1 must be string).<br/>
+
+*Note: supported type: [string , char , int , double , decimal , byte , bool]<br/>
+
+Title:<br/>
+is a property name for elemnet.( for example first element in the data.txt is name so Title Value in the Filed1 must be name)<br/>
+
+*Note:Title Value must be match with your class property name. for example if Title value is Age you must craete a class that have a property with Age name.<br/>
+
+TERMINATOR:<br/>
+specifid delimiter for field. (for example in the "alireza,p,0010000000,24,http://github.com/alirezap" section splited with ',' so TERMINATOR for each fields must be ',')
+
+
+Full Example:<br/>
+
+data.txt:<br/>
+                [alireza,p,0010000000,24,http://github.com/alirezap][ali,pa,0010000230,25,http://nuget.org/alirezap]
+
+syntax.xml:<br/>
+
+                <?xml version="1.0" encoding="UTF-8"?>
+                <body>
+                <syntax>
+                <record StartWith="[" EndWith="]"/>
+                </syntax>
+                <content>
+                <FIELD1 ID="1" Type="string" Title="name" TERMINATOR=","/>
+                <FIELD2 ID="2" Type="string" Title="lastname" TERMINATOR=","/>
+                <FIELD3 ID="3" Type="string" Title="shenasname" TERMINATOR=","/>
+                <FIELD4 ID="4" Type="int" Title="age" TERMINATOR=","/>
+                <FIELD5 ID="5" Type="string" Title="url" TERMINATOR="]"/>
+                </content>
+                </body>
+
+now in the code:<br/>
+
+define a class for batch file:<br/>
+
+                class student
+                {
+                public string name { get; set; }
+                public string lastname { get; set; }
+                public int age { get; set; }
+                public string shenasname { get; set; }
+                public string url { get; set; }
+                }
+
+then call parsefile:<br/>
+
+                student myObj = new student();
+                student[] res = batch.ParseFile("e:\\data.txt", "e:\\syntaxt.xml", myObj);
+                
+                foreach(student s in res)
+                {
+                Console.WriteLine("{0} {1} {2} {3} {4}", s.name, s.lastname, s.age, s.shenasname, s.url);
+                }
+                
+Other Sample For Batch Parser:<br/>
+
+data.txt: (without boundary)<br/>
+
+                alireza,paridar,0010000000,24,http://github.com/alirezap,ali,pari,0010000230,25,http://nuget.org/alirezap,
+
+syntax.xml: (without boundary StartWith and EndWith value is null)<br/>
+
+                <?xml version="1.0" encoding="UTF-8"?>
+                <body>
+                <syntax>
+                <record StartWith="" EndWith=""/>
+                </syntax>
+                <content>
+                <FIELD1 ID="1" Type="string" Title="name" TERMINATOR="," MAX_LENGTH="30"/>
+                <FIELD2 ID="2" Type="string" Title="lastname" TERMINATOR="," MAX_LENGTH="30"/>
+                <FIELD3 ID="3" Type="string" Title="shenasname" TERMINATOR="," MAX_LENGTH="30"/>
+                <FIELD4 ID="4" Type="int" Title="age" TERMINATOR="," MAX_LENGTH="3"/>
+                <FIELD5 ID="5" Type="string" Title="url" TERMINATOR="," MAX_LENGTH="50"/>
+                </content>
+                </body>
+
+in the code:<br/>
+
+define a class for batch file:<br/>
+
+                class student
+                {
+                public string name { get; set; }
+                public string lastname { get; set; }
+                public int age { get; set; }
+                public string shenasname { get; set; }
+                public string url { get; set; }
+                }
+
+then call parsefile:<br/>
+
+                student myObj = new student();
+                student[] res = batch.ParseFile("e:\\data.txt", "e:\\syntaxt.xml", myObj);
+            
+                foreach(student s in res)
+                {
+                Console.WriteLine("{0} {1} {2} {3} {4}", s.name, s.lastname, s.age, s.shenasname, s.url);
+                }
+
+
             
             
 Refrence:
