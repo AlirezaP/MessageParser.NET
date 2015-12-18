@@ -294,7 +294,7 @@ define a class for batch file:<br/>
 then call parsefile:<br/>
 
                 student myObj = new student();
-                student[] res = batch.ParseFile("e:\\data.txt", "e:\\syntaxt.xml", myObj);
+                student[] res = batch.ParseFile("e:\\data.txt", "e:\\syntax.xml", myObj);
                 
                 foreach(student s in res)
                 {
@@ -339,7 +339,7 @@ define a class for batch file:<br/>
 then call parsefile:<br/>
 
                 student myObj = new student();
-                student[] res = batch.ParseFile("e:\\data.txt", "e:\\syntaxt.xml", myObj);
+                student[] res = batch.ParseFile("e:\\data.txt", "e:\\syntax.xml", myObj);
             
                 foreach(student s in res)
                 {
