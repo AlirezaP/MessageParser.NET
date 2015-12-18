@@ -157,6 +157,55 @@ ISO8583:
             DE[41] = TID;
 
             string NewISOmsg = iso.Build(DE, MTI);
+
+Patterns:
+
+             string txt = @"
+              hi my name is alireza.
+              this is a test value for messageparser.net.
+              messageparser.net can detect date value in the txt like (persian date:1394-01-01).
+              or detect Geo position like this (21.422530, 39.826178).
+              or mail address like (test123@any.com,t4t@test.com|t5t@any.ir).
+              or url like (https://www.nuget.org/profiles/AlirezaP , https://github.com/alirezaP/).
+              or currency like ($1,000or$125,100).";
+
+            MessageParser.NET.Tools.Patterns pattern = new MessageParser.NET.Tools.Patterns();
+
+            string[] Mail = pattern.GetMails(txt);
+            string[] Currency = pattern.GetCurrency(txt);
+            string[] Date = pattern.GetDate(txt);
+            string[] Url = pattern.GetUrl(txt);
+            string[] Position = pattern.GetPosition(txt);
+
+            Console.WriteLine("all mail address in the txt:");
+            foreach (string t in Mail)
+            {
+                Console.WriteLine(t);
+            }
+
+            Console.WriteLine("all Currency in the txt:");
+            foreach (string t in Currency)
+            {
+                Console.WriteLine(t);
+            }
+
+            Console.WriteLine("all Date in the txt:");
+            foreach (string t in Date)
+            {
+                Console.WriteLine(t);
+            }
+
+            Console.WriteLine("all Url in the txt:");
+            foreach (string t in Url)
+            {
+                Console.WriteLine(t);
+            }
+
+            Console.WriteLine("all Position in the txt:");
+            foreach (string t in Position)
+            {
+                Console.WriteLine(t);
+            }
             
             
 Refrence:
