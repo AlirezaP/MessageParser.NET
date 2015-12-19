@@ -1,5 +1,5 @@
 # MessageParser.NET
-MessageParser.NET Is Simple Mesage Parser For XML,ISO 8583,EXCEL,JSON 
+MessageParser.NET Is Simple Mesage Parser For XML,ISO 8583,EXCEL,JSON,Batch File 
 
 Nuget Url: http://www.nuget.org/packages/MessageParser.NET/
 
