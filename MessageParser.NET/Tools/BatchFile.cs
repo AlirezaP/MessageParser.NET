@@ -230,8 +230,8 @@ namespace MessageParser.NET.Tools
 
         private bool isEqual(string str, ref int index, string delimiter)
         {
-            if (str[index].ToString() == delimiter)
-                return true;
+            //if (str[index].ToString() == delimiter)
+            //    return true;
 
             for (int i = 0; i < delimiter.Length; i++)
             {
@@ -241,7 +241,7 @@ namespace MessageParser.NET.Tools
                 }
             }
 
-            index += delimiter.Length;
+            //index += delimiter.Length;
             return true;
         }
     }
