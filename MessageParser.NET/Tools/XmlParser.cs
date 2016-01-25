@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace MessageParser.NET.Tools
 {
+    //For More Info And Example Please Visit https://github.com/AlirezaP/MessageParser.NET
+
     public class XmlParser
     {
         /// <summary>
@@ -60,6 +63,26 @@ namespace MessageParser.NET.Tools
                 res[i] = match[i].Value;
 
             return res;
+        }
+
+        public string GetElementContentByParent(string xmlString,string elementsParent,string element)
+        {
+            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
+            {
+                reader.ReadToFollowing(elementsParent);
+                reader.ReadToFollowing(element);
+                return reader.ReadElementContentAsString();
+            }
+        }
+
+        public async Task<string> GetElementContentByParentAsync(string xmlString, string elementsParent, string element)
+        {
+            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString),new XmlReaderSettings() { Async = true }))
+            {
+                reader.ReadToFollowing(elementsParent);
+                reader.ReadToFollowing(element);
+                return await reader.ReadElementContentAsStringAsync();
+            }
         }
 
         /// <summary>
