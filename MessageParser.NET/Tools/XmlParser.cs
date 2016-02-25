@@ -496,5 +496,48 @@ namespace MessageParser.NET.Tools
             return output.ToString();
 
         }
+
+        public XmlNode[] GetSubTreeByParent(string data, string parent)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(data);
+            return GetSubTreeByParent(doc,parent);
+        }
+
+        public XmlNode[] GetSubTreeByParent(XmlDocument doc, string parent)
+        {
+            List<XmlNode> queue = new List<XmlNode>();
+            for (int i = 0; i < doc.ChildNodes.Count; i++)
+            {
+                if (doc.ChildNodes[i].Name == parent)
+                {
+                    queue.Add(doc.ChildNodes[i]);
+                }
+                else
+                {
+                    queue.AddRange(GetSubTreeByParent(doc.ChildNodes[i], parent));
+                }
+            }
+
+            return queue.ToArray();
+        }
+
+        public XmlNode[] GetSubTreeByParent(XmlNode doc, string parent)
+        {
+            List<XmlNode> queue = new List<XmlNode>();
+            for (int i = 0; i < doc.ChildNodes.Count; i++)
+            {
+                if (doc.ChildNodes[i].Name == parent)
+                {
+                    queue.Add(doc.ChildNodes[i]);
+                }
+                else
+                {
+                    queue.AddRange(GetSubTreeByParent(doc.ChildNodes[i], parent));
+                }
+            }
+
+            return queue.ToArray();
+        }
     }
 }
