@@ -55,7 +55,8 @@ namespace MessageParser.NET.Tools
             //    reader.ReadToFollowing(element);
             //    return reader.ReadElementContentAsString();
             //}
-            Regex regex = new Regex(@"<\s*" + element + @".*>.*<\s*/\s*" + element + @"\s*>", RegexOptions.Singleline);
+
+            Regex regex = new Regex(@"<\s*" + element + @".*>.*<\s*/\s*" + element + @"\s*>");
             var match = regex.Matches(xmlString);
             string[] res = new string[match.Count];
 
@@ -65,7 +66,7 @@ namespace MessageParser.NET.Tools
             return res;
         }
 
-        public string GetElementContentByParent(string xmlString,string elementsParent,string element)
+        public string GetElementContentByParent(string xmlString, string elementsParent, string element)
         {
             using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
             {
@@ -77,7 +78,7 @@ namespace MessageParser.NET.Tools
 
         public async Task<string> GetElementContentByParentAsync(string xmlString, string elementsParent, string element)
         {
-            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString),new XmlReaderSettings() { Async = true }))
+            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString), new XmlReaderSettings() { Async = true }))
             {
                 reader.ReadToFollowing(elementsParent);
                 reader.ReadToFollowing(element);
@@ -100,6 +101,36 @@ namespace MessageParser.NET.Tools
                 {
                     if (reader.NodeType == XmlNodeType.Element)
                         output.Add(reader.Name);
+                }
+
+                return output.ToArray();
+            }
+        }
+
+
+        //public string[] GetAllElementsRecords(string xmlString)
+        //{
+        //    return GetAllElementsRecordsByName(xmlString, null);
+        //}
+
+        public string[] GetAllElementsRecordByName(string xmlString, string elementName)
+        {
+            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
+            {
+                List<string> output = new List<string>();
+
+                while (reader.Read())
+                {
+                    if (elementName != null)
+                    {
+                        if (reader.NodeType == XmlNodeType.Element && reader.Name == elementName)
+                            output.Add(reader.ReadOuterXml());
+
+                        continue;
+                    }
+
+                    if (reader.NodeType == XmlNodeType.Element)
+                        output.Add(reader.ReadOuterXml());
                 }
 
                 return output.ToArray();
@@ -501,7 +532,7 @@ namespace MessageParser.NET.Tools
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(data);
-            return GetSubTreeByParent(doc,parent);
+            return GetSubTreeByParent(doc, parent);
         }
 
         public XmlNode[] GetSubTreeByParent(XmlDocument doc, string parent)
