@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.0.3.4</version>
+    <title>MessageParser.Net</title>
+    <authors>Alireza Paridar</authors>
+    <owners>Alireza Paridar</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>https://github.com/AlirezaP/MessageParser.NET</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MessageParser.Net Is Simple Message Parser
+For More Info And Example Please Visit https://github.com/AlirezaP/MessageParser.NET</description>
+    <releaseNotes>Added GetSubTrGetAllElementsRecordByNameeeByParent in the XmlParser.
+    Fixed Bug.
+For More Info And Example Please Visit https://github.com/AlirezaP/MessageParser.NET</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>MessageParser.Net Iso8583Parser XmlParser ExcelParser Json batchParser</tags>
+  </metadata>
+</package>

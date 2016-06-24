@@ -570,5 +570,35 @@ namespace MessageParser.NET.Tools
 
             return queue.ToArray();
         }
+
+        public byte[] Serialize<T>(T objetType)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+            using (XmlWriter writer = XmlWriter.Create(ms, settings))
+            {
+                serializer.Serialize(writer, objetType, null);
+            }
+
+            return ms.ToArray();
+        }
+
+        public T Deserialize<T>(byte[] data)
+        {
+            T myObject;
+
+            System.Xml.Serialization.XmlSerializer mySerializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream(data);
+
+            myObject = (T)
+            mySerializer.Deserialize(ms);
+
+            return myObject;
+        }
     }
 }
