@@ -1,8 +1,9 @@
 ﻿using OfficeOpenXml;
+using System.Linq;
 
 namespace MessageParser.NET.Tools
 {
-   public class ExcelParser
+    public class ExcelParser
     {
         private System.IO.FileInfo ExcelFile;
         public ExcelPackage excel;
@@ -175,6 +176,56 @@ namespace MessageParser.NET.Tools
 
             rowLengh++;
             worksheet.Cells[rowLengh, column].Value = value;
+        }
+
+        public void AddData(ExcelWorksheet worksheet, string columnName, int row, string value)
+        {
+            int column = 1;
+
+            if (worksheet.Dimension != null)
+            {
+                var columnLengh = worksheet.Dimension.End.Column;
+                column = ColumnIndex(worksheet, columnName);
+            }
+
+            worksheet.Cells[row, column].Value = value;
+        }
+
+        public void AddData<T>(ExcelWorksheet worksheet, T[] arrayObj)
+        {
+            int row = 2;
+
+            var head = arrayObj.FirstOrDefault().GetType().GetProperties().Select(p=>p.Name).ToArray();
+
+            foreach (var item in head)
+            {
+                if (ColumnIndex(worksheet,item) > 0)
+                {
+                    continue;
+                }
+
+                AddColumn(worksheet, item);
+            }
+
+            //AddRangeColumn(worksheet, head);
+
+            foreach (var item in arrayObj)
+            {
+                var collection = item.GetType().GetProperties();
+
+                foreach (var item2 in collection)
+                {
+                    AddData(
+                        worksheet,
+                        item2.Name,
+                        row,
+                        item2.GetValue(item)?.ToString()
+                        );
+                }
+                row++;
+
+            }
+
         }
 
         /// <summary>

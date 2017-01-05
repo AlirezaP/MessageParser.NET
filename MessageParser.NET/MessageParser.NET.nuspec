@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.3.4</version>
+    <version>1.0.3.6</version>
     <title>MessageParser.Net</title>
     <authors>Alireza Paridar</authors>
     <owners>Alireza Paridar</owners>
@@ -12,10 +12,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessageParser.Net Is Simple Message Parser
 For More Info And Example Please Visit https://github.com/AlirezaP/MessageParser.NET</description>
-    <releaseNotes>Added GetSubTrGetAllElementsRecordByNameeeByParent in the XmlParser.
-    Fixed Bug.
+    <releaseNotes>Added AddData Method For Object
 For More Info And Example Please Visit https://github.com/AlirezaP/MessageParser.NET</releaseNotes>
-    <copyright>Copyright 2015</copyright>
+    <copyright>Copyright 2016</copyright>
     <tags>MessageParser.Net Iso8583Parser XmlParser ExcelParser Json batchParser</tags>
   </metadata>
 </package>
